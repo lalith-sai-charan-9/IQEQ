@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoadingScreen } from './components/load';
 import { LoginScreen } from './components/login';
 import { HomeScreenV1, HomeScreenV2, HomeScreenV3 } from './components/HomeScreenVersions';
@@ -40,20 +40,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Default Route - Redirect to Loading */}
+        <Route path="/" element={<Navigate to="/loading" replace />} />
+
         {/* Loading Screen Route */}
         <Route 
           path="/loading" 
-          element={
-            <LoadingScreen onComplete={handleLoadingComplete} />
-          } 
+          element={<LoadingScreen onComplete={handleLoadingComplete} />} 
         />
 
         {/* Login Screen Route */}
         <Route 
           path="/login" 
-          element={
-            <LoginScreen onLogin={handleLogin} />
-          } 
+          element={<LoginScreen onLogin={handleLogin} />} 
         />
 
         {/* Home Screen Routes - Different Versions */}
@@ -99,13 +98,8 @@ function App() {
           } 
         />
 
-        {/* Default route redirects to login */}
-        <Route 
-          path="/" 
-          element={
-            <LoginScreen onLogin={handleLogin} />
-          } 
-        />
+        {/* Catch all unknown routes and redirect to loading */}
+        <Route path="*" element={<Navigate to="/loading" replace />} />
       </Routes>
     </BrowserRouter>
   );
